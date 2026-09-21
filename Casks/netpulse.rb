@@ -7,16 +7,14 @@ cask "netpulse" do
   desc "Lightweight, privacy-first network speed monitor for the macOS menu bar"
   homepage "https://github.com/tonmoy-y/NetPulse"
 
-  depends_on macos: ">= :ventura"
+  depends_on macos: :ventura
 
   app "NetPulse.app"
 
-  postflight do
+  postflight_steps do
     # NetPulse is ad-hoc signed, not notarized with a paid Apple Developer
-    # ID, so Gatekeeper would otherwise refuse to open it with no
-    # explanation. Clearing the quarantine attribute here is equivalent to
-    # the user doing Right-click → Open once, and is standard practice for
-    # Homebrew casks distributing non-notarized, ad-hoc-signed apps.
+    # ID. Clearing quarantine here is the Homebrew-standard equivalent of
+    # the one-time Right-click → Open step a manual .dmg install needs.
     system_command "/usr/bin/xattr",
                     args: ["-dr", "com.apple.quarantine", "#{appdir}/NetPulse.app"],
                     sudo: false
